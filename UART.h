@@ -1,0 +1,139 @@
+/*
+ * UART.h
+ *
+ *  Created on: ??þ/??þ/????
+ *      Author: lenovo 1
+ */
+
+#ifndef UART_H_
+#define UART_H_
+
+/*
+ * preprocessor configurable driver
+ * linking configurable driver
+ *post build configurable driver"RUN TIME" here
+ * */
+
+typedef enum
+{
+
+	UART_SINGLE_PROCESSOR,
+	UART_MULTI_PROCESSOR,
+
+}USART_COMMUNICATION_MODE;
+
+
+typedef enum
+{
+
+	UART_ASYNCH_NORMALSPEED,
+	UART_ASYNCH_DOUBLESPEED,
+	USART_SYNCH,
+}USART_COMMUNICATION_TYPE;
+
+
+
+typedef enum
+{
+
+	USART_DISABLE,
+	USART_TX_ONLY,
+	USART_RX_ONLY,
+	USART_TX_RX,
+
+}UART_ENABLE;
+
+
+typedef enum
+{
+
+	USART_INTERRUPT_DISABLE,
+	USART_RXCOMP_ENABLE,
+	USART_TXCOMP_ENABLE,
+	USART_UDR_EMPTY_ENABLE,
+	USART_RXCOMP_TXCOMP_ENABLE,
+	USART_RXCOMP_UDR_EMPTY_ENABLE,
+	USART_TXCOMP_UDR_EMPTY_ENABLE,
+	USART_RXCOMP_TXCOMP_UDR_EMPTY_ENABLE,
+
+}USART_INTERRUPT_SOURCE;
+
+
+typedef enum
+{
+
+USART_5_BIT_DATA,
+USART_6_BIT_DATA,
+USART_7_BIT_DATA,
+USART_8_BIT_DATA,
+USART_9_BIT_DATA,
+
+}USART_DATA_FRAME;
+
+
+
+typedef enum
+{
+
+USART_PARITY_DISABLED_1_STOP,
+USART_PARITY_DISABLED_2_STOP,
+USART_PARITY_EVEN_1_STOP,
+USART_PARITY_EVEN_2_STOP,
+USART_PARITY_ODD_1_STOP,
+USART_PARITY_ODD_2_STOP,
+
+}USART_CONTROL_FRAME;
+
+
+typedef enum
+{
+
+USART_SAMPLE_ON_FALLING,
+USART_SAMPLE_ON_RISING,
+
+}USART_CLOCK_PLARITY;
+
+
+typedef enum
+{
+
+USART_NO_ERROR,
+USART_PARITY_ERROR,
+USART_DOR_ERROR,
+USART_FRAME_ERROR,
+
+}ERROE_TYPE;
+
+
+
+
+
+typedef struct
+{
+
+	/*please refer to upper enumeration*/
+	UART_ENABLE                ENABLE_MODE;
+	USART_COMMUNICATION_MODE   COMMUNICATION_MODE;
+	USART_COMMUNICATION_TYPE   COMMUNICATION_TYPE;
+	USART_INTERRUPT_SOURCE     INTERRUPT_SOURCE;
+	USART_DATA_FRAME           DATA_FRAME;
+	USART_CONTROL_FRAME        CONTROL_FRAME;
+	/*synch mode only*/
+	USART_CLOCK_PLARITY        CLOCK_PLARITY;
+	ERROE_TYPE                 READ_ERROR;
+	u16                        BAUD_RATE;
+	void  (*RXC_INERRUPT_CB)(void);
+	void  (*TXC_INERRUPT_CB)(void);
+	void  (*UDRE_INERRUPT_CB)(void);
+
+}USART_CONFIGURATION_STRUCT;
+
+extern USART_CONFIGURATION_STRUCT   UART0;
+
+void USART_Init(void);
+void USART_Send_Byte(u8 Data);
+u16 USART_Read_Byte(void);
+USART_Set_Interrupt_Call();
+
+
+#endif /* UART_H_ */
